@@ -93,8 +93,9 @@ DATABASES = {
     }
 }
 
-GDAL_LIBRARY_PATH = 'C:\\OSGeo4W\\bin\\gdal307.dll'
+GDAL_LIBRARY_PATH = 'C:\\OSGeo4W\\bin\\gdal309.dll'
 GEOS_LIBRARY_PATH = 'C:\\OSGeo4W\\bin\\geos_c.dll'
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -136,4 +137,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
+os.environ['GDAL_DATA'] = 'C:\\OSGeo4W\\share\\gdal'
+os.environ['PROJ_LIB'] = 'C:\\OSGeo4W\\share\\proj'

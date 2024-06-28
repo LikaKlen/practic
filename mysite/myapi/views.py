@@ -1,16 +1,14 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
+
+from .pagination import StandardResultsSetPagination
 from .serializers import CitySerializer
 from .models import City
 from .serializers import CountrySerializer
 from .models import Country
 from .serializers import CapitalSerializer
 from .models import Capital
-
-from django.shortcuts import render
-from django.contrib.gis.geos import Point, Polygon
-from django.contrib.gis.db.models.functions import MakeValid
 from .models import Country
-from .forms import CoordinatesForm
+from urllib.parse import unquote
 
 class CityViewSet(viewsets.ModelViewSet):
     queryset = City.objects.all().order_by('name')
@@ -25,6 +23,16 @@ class CapitalViewSet(viewsets.ModelViewSet):
 class CountryViewSet(viewsets.ModelViewSet):
     queryset = Country.objects.all().order_by('name')
     serializer_class = CountrySerializer
+
+
+class CitiesByCountryList(generics.ListAPIView):
+    serializer_class = CitySerializer
+    pagination_class = StandardResultsSetPagination
+
+    def get_queryset(self):
+        country_name_encoded = self.kwargs['name']
+        country_name = unquote(country_name_encoded)
+        return City.objects.filter(country__name=country_name).order_by('name')
 
 from django.contrib.gis.geos import Polygon
 from rest_framework.views import APIView
@@ -42,3 +50,4 @@ class CityFilterView(APIView):
             return Response({'cities': city_names})
         else:
             return Response({'error': 'bbox parameter is missing'})
+

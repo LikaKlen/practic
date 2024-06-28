@@ -16,6 +16,7 @@ class City(models.Model):
     description=models.CharField(max_length=200, blank=True, null=True)
     photo = models.ImageField(upload_to = "images/")
     location = models.PointField()#default= Point(0,0))
+    country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name='cities', null=True)
 
 
     def __str__(self):
